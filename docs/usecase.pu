@@ -1,0 +1,48 @@
+@startuml toko_online
+
+left to right direction
+
+actor admin
+actor customer
+
+rectangle "Toko Online" {
+  package "autentikasi" {
+    usecase "login" as login
+    usecase "signup" as signup
+    
+    admin -- signup #line:green
+    admin - login #line:green
+    customer -- signup #line:red
+    customer - login #line:red
+  }
+
+  package "aktivitas admin" {
+    admin -- (Melihat Tampilan\nUtama Admin Page)  #line:green
+    admin -- (Melihat Produk)  #line:green
+    admin -- (Menambah Produk)  #line:green
+    admin -- (Mengupdate Produk) #line:green
+
+    admin --- (Melihat Kategori Produk) #line:green
+    admin --- (Menambah Kategori Produk) #line:green
+    admin -- (Menghapus Kategori Produk) #line:green
+    admin -- (Mengupdate Kategori Produk) #line:green
+
+    admin -- (Melihat Alamat Pemesan) #line:green
+    admin -- (Melihat Detail Pesanan) #line:green
+    admin -- (Melihat Pesanan) #line:green
+    admin --- (Mengubah Status Pesanan) #line:green
+  }
+
+  package "aktivitas Customer" {
+    customer -- (Melihat Tampilan\nHomepage Website) #line:red
+    customer -- (Melihat Riwayat Pesanan) #line:red
+    customer -- (Melihat Detail Produk\nRiwayatPesanan) #line:red
+    customer -- (Melihat Data Profile) #line:red
+
+    customer -- (Memilih Produk) #line:red
+    customer -- (Checkout) #line:red
+    customer -- (Melakukan Pembayaran) #line:red
+  }
+}
+
+@enduml
