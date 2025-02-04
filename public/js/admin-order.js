@@ -67,7 +67,7 @@ Array.from(toggleDetail).forEach(t => {
         let htmlText = "";
         data.items.forEach(i => {
             htmlText += `
-                            <img src="${"/storage/" + i.image}" alt="${i.name}" class="w-1/2" />
+                            <img src="${i.imageUrl}" alt="${i.name}" class="w-1/2" />
                             <div class="flex flex-col gap-y-3">
                                 <span class="font-bold text-xl">
                                     ${i.name} (x${i.pivot.kuantitas})

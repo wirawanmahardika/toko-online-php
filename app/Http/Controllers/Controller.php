@@ -33,8 +33,12 @@ class Controller extends BaseController
 
     public function home()
     {
-        $kategori = Kategori::limit(6)->get();
-        return view('home', ["title" => "home", "kategoris" => $kategori]);
+        $kategoris = Kategori::limit(6)->get();
+        $kategoris = $kategoris->map(function ($k) {
+            $k->imageUrl = env('STORAGE_URL_BUCKET') . $k->image;
+            return $k;
+        });
+        return view('home', ["title" => "home", "kategoris" => $kategoris]);
     }
 
     public function shop(Request $request)
@@ -68,6 +72,10 @@ class Controller extends BaseController
         }
 
         $items = $queryItem->get();
+        $items = $items->map(function ($i) {
+            $i->imageUrl = env('STORAGE_URL_BUCKET') . $i->image;
+            return $i;
+        });
         return view('shop', [
             "title" => "shop",
             "items" => $items,

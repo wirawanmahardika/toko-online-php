@@ -20,7 +20,7 @@ Array.from(btnOrders).forEach(btn => {
         itemNama.textContent = e.target.parentElement.dataset.nama
         itemId.value = e.target.parentElement.dataset.id
         itemHarga.value = e.target.parentElement.dataset.harga
-        itemImage.src = "/storage/" + e.target.parentElement.dataset.image
+        itemImage.src = e.target.parentElement.dataset.image
     })
 })
 

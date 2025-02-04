@@ -13,6 +13,10 @@ class ItemController extends Controller
     public function lihatItem()
     {
         $items = Item::all();
+        $items = $items->map(function ($i) {
+            $i->imageUrl = env('STORAGE_URL_BUCKET') . $i->image;
+            return $i;
+        });
         return view('admin-lihat-item', ["items" => $items]);
     }
 
@@ -41,7 +45,8 @@ class ItemController extends Controller
             "name" => $request->name,
             "harga" => $request->harga,
             "stok" => $request->stok,
-            "image" => $request->file("image")->store("item_image", "public"),
+            "image" => Storage::disk('s3')->put('item-image', $request->file('image')),
+            // "image" => $request->file("image")->store("item_image", "public"),
             "kategori_id" => $request->id_kategori
         ]);
         return redirect("/admin/item");
@@ -63,8 +68,8 @@ class ItemController extends Controller
             if (isset($value)) {
                 if ($key === 'image') {
                     $item = Item::select("image")->find($request->id);
-                    Storage::delete("public/" . $item->image);
-                    $data['image'] = $request->file("image")->store("item_image", "public");;
+                    Storage::disk('s3')->delete($item->image);
+                    $data['image'] = Storage::disk('s3')->put('item-image', $request->file('image'));
                 } else {
                     $data[$key] = $value;
                 }
@@ -80,7 +85,7 @@ class ItemController extends Controller
     {
         $item = Item::select("image")->find($id);
         Item::where("id", $id)->delete();
-        Storage::delete("public/" . $item->image);
+        Storage::disk('s3')->delete($item->image);
         return redirect("/admin/item");
     }
 }

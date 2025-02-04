@@ -32,11 +32,11 @@
         </form>
 
         @foreach ($items as $item)
-            <div data-harga="{{ $item->harga }}" data-id="{{ $item->id }}" data-image="{{ $item->image }}"
+            <div data-harga="{{ $item->harga }}" data-id="{{ $item->id }}" data-image="{{ $item->imageUrl }}"
                 data-nama="{{ $item->name }}" data-stok="{{ $item->stok }}"
                 class="flex justify-center flex-col gap-y-1 w-4/5">
                 <div class="bg-[#d9d9d9] flex items-center justify-center p-5">
-                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-3/5">
+                    <img src="{{ $item->imageUrl }}" alt="{{ $item->name }}" class="w-3/5">
                 </div>
                 <span class="font-bold text-xl">{{ $item->name }}</span>
                 <span>Stock : {{ $item->stok }}</span>

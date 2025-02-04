@@ -25,6 +25,7 @@ class UserController extends Controller
                 }
             }
 
+            $item['imageUrl'] = env('STORAGE_URL_BUCKET') . $item['image'];
             $item['kuantitas'] = $found['kuantitas'];
             return $item;
         }, $items->toArray());
@@ -56,10 +57,14 @@ class UserController extends Controller
     public function historyDetail($id)
     {
         $pesanan = Pesanan::find($id);
+        $items = $pesanan->items->map(function ($i) {
+            $i->imageUrl = env('STORAGE_URL_BUCKET') . $i->image;
+            return $i;
+        });
         return view('history-detail', [
             "title" => "Detail History",
             "date" => $pesanan->created_at->format("d/m/y"),
-            "items" => $pesanan->items
+            "items" => $items
         ]);
     }
 

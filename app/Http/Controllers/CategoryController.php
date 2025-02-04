@@ -12,6 +12,10 @@ class CategoryController extends Controller
     public function lihatCategory()
     {
         $kategoris = Kategori::select(["id", "name", "image"])->get();
+        $kategoris = $kategoris->map(function ($k) {
+            $k->imageUrl = env('STORAGE_URL_BUCKET') . $k->image;
+            return $k;
+        });
         return view('admin-lihat-category', ["kategoris" => $kategoris]);
     }
 
@@ -34,7 +38,8 @@ class CategoryController extends Controller
 
         Kategori::create([
             "name" => $request->name,
-            "image" => $request->file("image")->store("category_image", "public")
+            // "image" => $request->file("image")->store("category_image", "public")
+            "image" => Storage::disk('s3')->put('category-image', $request->file('image'))
         ]);
 
         return redirect('/admin/category');
@@ -53,8 +58,8 @@ class CategoryController extends Controller
             if (isset($value)) {
                 if ($key === 'image') {
                     $kategori = Kategori::select("image")->find($request->id);
-                    Storage::delete("public/" . $kategori->image);
-                    $data['image'] = $request->file("image")->store("category_image", "public");;
+                    Storage::disk('s3')->delete($kategori->image);
+                    $data['image'] = Storage::disk('s3')->put('category-image', $request->file('image'));
                 } else {
                     $data[$key] = $value;
                 }
@@ -70,7 +75,7 @@ class CategoryController extends Controller
     {
         $kategori = Kategori::select("image")->find($id);
         Kategori::where("id", $id)->delete();
-        Storage::delete("public/" . $kategori->image);
+        Storage::disk('s3')->delete($kategori->image);
         return redirect("/admin/category");
     }
 }

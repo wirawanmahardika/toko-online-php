@@ -1,6 +1,6 @@
 <x-layout>
-    <x-slot:title>{{$title}}</x-slot:title>
-    
+    <x-slot:title>{{ $title }}</x-slot:title>
+
     <div class="h-screen w-full bg-[#d9d9d9] grid grid-cols-2">
         <div class="flex items-center justify-center flex-col">
             <span class="font-bold text-3xl">GET ALL YOU NEED</span>
@@ -18,13 +18,15 @@
 
             @foreach ($kategoris as $k)
                 <div class="flex relative items-center justify-center flex-col gap-y-4 p-9 bg-[#d9d9d9]">
-                    <img src="{{"storage/".$k->image}}" class="w-4/5">
-                    <div class="absolute bottom-3 rounded px-3 text-xl bg-black text-white py-1 font-bold">{{$k->name}}</div>
+                    <img src="{{ $k->imageUrl }}" class="w-4/5">
+                    <div class="absolute bottom-3 rounded px-3 text-xl bg-black text-white py-1 font-bold">
+                        {{ $k->name }}</div>
                 </div>
             @endforeach
-        
+
         </div>
     </div>
 
-    <footer class="w-full bg-black text-white justify-center items-center flex text-sm py-2">2024 Wirawan All Rights Reserved</footer>
+    <footer class="w-full bg-black text-white justify-center items-center flex text-sm py-2">2024 Wirawan All Rights
+        Reserved</footer>
 </x-layout>

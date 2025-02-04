@@ -97,6 +97,7 @@ class PesananController extends Controller
         $items = $pesanan->items->toArray();
         $items = array_map(function ($i) {
             $i["harga"] = number_format($i["harga"]);
+            $i['imageUrl'] = env('STORAGE_URL_BUCKET') . $i['image'];;
             return $i;
         }, $items);
 
